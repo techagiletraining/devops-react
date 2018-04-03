@@ -72,7 +72,7 @@ Confirm the container is running and note the container ID:
 docker ps
 ```
 
-Kill the continer:
+Kill the container:
 ```bash
 docker rm CONTAINERID -f
 ```
@@ -86,12 +86,12 @@ docker-compose up
 
 The app will be exposed and running on port 5000, you can visit it by navigating to the web preview button in the top right and setting the port to 5000.
 
-To stop the container execute `ctrl + c`.
+To stop the container execute `ctrl + c` in the terminal.
 
 Click the **Continue** button to move to the next step.
 
 ## Jenkins pipeline
-For creating the pipeline you will build out a `Jenkins` file (template provided).  A [Jenkins](https://jenkins.io/) instance that is already running will execute the steps you define in the pipeline and newly pushed commits will be detected up automatically by branch name.
+For creating the pipeline you will build out a `Jenkins` file (template provided).  A [Jenkins](https://jenkins.io/) instance that is already running will execute the steps you define in the pipeline and newly pushed commits/branches will be detected automatically by branch name.
 
 View the Jenkinsfile in the editor and take note of the stages:
 
