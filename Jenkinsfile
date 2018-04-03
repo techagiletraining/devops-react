@@ -58,7 +58,7 @@ volumes: [
 		}
 
 		stage('Deploy') {
-			container('nodecloud') {
+			container('nodegcloud') {
 				sh 'echo deploying image...'
 			}
 		}
