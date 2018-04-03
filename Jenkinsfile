@@ -21,6 +21,7 @@ volumes: [
 		    container('nodegcloud') {
 				sh 'echo begin setup'
                 withCredentials([file(credentialsId: 'jenkins-svc-acct', variable: 'serviceJson')]) {
+					sh "gcloud config set project ${PROJECT_ID}"
 					sh "gcloud auth activate-service-account --key-file=${serviceJson}"
                 }
 
@@ -57,7 +58,7 @@ volumes: [
 		}
 
 		stage('Deploy') {
-			container('dgcloud') {
+			container('nodecloud') {
 				sh 'echo deploying image...'
 			}
 		}
