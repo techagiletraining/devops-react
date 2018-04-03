@@ -1,4 +1,5 @@
-# CiCd
+# Continuous Integration / Deployment / Delivery
+
 The goal of this walkthrough is to demonstrate at a high level the concepts of CiCd and pipeline as code. You will leverage Jenkins, Docker and Kubernetes all running on Google Cloud to build, test and deploy the shell react app.
 
 **Time to complete**: About 45 minutes
@@ -15,12 +16,14 @@ Feature branch naming recommendations are first letter of your pair ID, for exam
 
 Git config:
 ```bash
-git config...
+git config --global user.name tech-agile
 ```
 
 ```bash
-git config...
+git config --global user.email techagile.github@gmail.com
 ```
+
+The password for the common user account will be provided in class.
 
 Create a feature branch:
 ```bash
@@ -29,7 +32,7 @@ git checkout -b NAME
 
 Example:
 ```bash
-git checkout devops-pair10
+git checkout -b devops-pair10
 ```
 
 Push the feature branch to the remote repository:
@@ -51,7 +54,7 @@ Open the `Dockerfile` in the editor.  This is a simple setup that pulls in the l
 
 Build the Docker image:
 ```bash
-docker build -t devops-react:latest
+docker build -t devops-react:latest .
 ```
 
 View the image and note the image ID:
@@ -81,23 +84,17 @@ Open the `docker-compose.yml` file in the editor. [Docker compose](https://docs.
 docker-compose up
 ```
 
-Confirm the container is running and note the container ID:
-```bash
-docker ps
-```
+The app will be exposed and running on port 5000, you can visit it by navigating to the web preview button in the top right and setting the port to 5000.
 
-Kill the continer:
-```bash
-docker rm CONTAINERID -f
-```
+To stop the container execute `ctrl + c`.
 
 Click the **Continue** button to move to the next step.
 
 ## Jenkins pipeline
-For creating the pipeline you will build out a `Jenkins` file (template provided).  A [Jenkins](https://jenkins.io/) instance that is already running will execute the steps you define in the pipeline.
-
+For creating the pipeline you will build out a `Jenkins` file (template provided).  A [Jenkins](https://jenkins.io/) instance that is already running will execute the steps you define in the pipeline and newly pushed commits will be detected up automatically by branch name.
 
 View the Jenkinsfile in the editor and take note of the stages:
+
 Sample:
 ```
 stage('Build') {
@@ -112,6 +109,10 @@ Access Jenkins (credentials provided in class):
 ```
 http://jenkins.techagile.training:8080/
 ```
+
+Navigate to the `devops-react` project and open it...you should see your feature branch and the status of the build. Take a look around at the steps in the Jenkins UI pipeline, they correspond to the `stage` variable in the `Jenkinsfile`.
+
+Now, let's add some functionality to those steps.
 
 Click the **Continue** button to move to the next step.
 
