@@ -54,12 +54,14 @@ volumes: [
 		stage('Publish Docker Image') {
 			container('nodegcloud') {
 				sh 'echo publishing image...'
+				sh 'gcloud -v'
 			}
 		}
 
 		stage('Deploy') {
 			container('nodegcloud') {
 				sh 'echo deploying image...'
+				sh 'kubectl version'
 			}
 		}
 	}
