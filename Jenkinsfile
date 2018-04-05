@@ -28,6 +28,15 @@ volumes: [
                 // set the kubectl context to the proper cluster
                 sh "gcloud container clusters get-credentials $CLUSTER_ID --zone=$CLUSTER_ZONE"
 				checkout scm
+
+				// write a version file to the /public folder
+				'{
+					"timeStamp": ${TIMESTAMP},
+					"imageVersion": "IMAGE_NAME",
+					"gitCommit": "GIT_COMMIT",
+					"gitBranch": "GIT_BRANCH", 
+					"buildNumber": "BUILD_NUMBER"
+				}'
 				sh 'echo end setup'
 			}
 		}
