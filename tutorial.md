@@ -6,6 +6,7 @@ The goal of this walkthrough is to demonstrate at a high level the concepts of C
 
 Click the **Continue** button to move to the next step.
 
+
 ## General App Setup and Info
 
 **Tip**: Click the copy button on the side of the code box and paste the command in the Cloud Shell terminal to run it.
@@ -127,6 +128,7 @@ Once complete the section should look like below:
 stage('Unit Test') {
 	container('nodegcloud') {
 		sh 'echo unit test'
+		sh 'CI=true npm test'
 	}
 }
 ```
@@ -153,7 +155,7 @@ it('fails for demo purposes', () => {
 ```
 
 ```bash
-git add `src/App.test.js1
+git add src/App.test.js1
 git commit -m "Fix failing test"
 git push origin <branchname>
 ```
@@ -173,13 +175,18 @@ stage('Build Docker Image') {
 
 Click the **Continue** button to move to the next step.
 
+Push the docker image to the Google Container Registry and then deploy it to the defined cluster.
+
+```
 stage('Publish Docker Image') {
 	container('nodegcloud') {
 		sh 'echo publishing image...'
 		sh "gcloud docker -- push ${IMAGE_NAME}"
 	}
 }
+```
 
+```
 stage('Deploy') {
 	container('nodegcloud') {
 		sh 'echo deploying image...'
@@ -189,6 +196,15 @@ sed 's/{{GIT_BRANCH_NAME}}/${GIT_BRANCH_NAME}/' > deployment.yaml
 sh "kubectl apply -f deployment.yaml --validate=false"
 	}
 }
+```
+
+Push the changes to the remote branch:
+```bash
+git add Jenkinsfile
+git commit -m "Publish the docker image and deploy."
+git push origin <branchname>
+```
+If the build was successful, the app will be deployed to the cluster defined in the `Jenkins` file.
 
 Click the **Continue** button to move to the next step.
 
