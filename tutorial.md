@@ -15,6 +15,11 @@ See the README.md file for info on the generated React app.
 
 Feature branch naming recommendations are based on your pair, for example `devops-pair1`. This will ensure your branch name is compatible with the automated build pipeline. Note the branch name should not include any `_` and generally special characters should generally be avoided.
 
+Set project config:
+```bash
+gcloud config set project devops-live
+```
+
 Git config:
 ```bash
 git config --global user.name tech-agile
