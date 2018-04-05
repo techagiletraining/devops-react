@@ -5,3 +5,17 @@ stage('Unit Test') {
 	}
 }
 
+stage('Build Docker Image') {
+	container('nodegcloud') {
+		sh 'echo building image...'
+		sh "docker build -t ${IMAGE_NAME} ."
+	}
+}
+
+
+stage('Publish Docker Image') {
+	container('nodegcloud') {
+		sh 'echo publishing image...'
+		sh "gcloud docker -- push ${IMAGE_NAME}"
+	}
+}
