@@ -12,7 +12,7 @@ Click the **Continue** button to move to the next step.
 
 See the README.md file for info on the generated React app.
 
-Feature branch naming recommendations are first letter of your pair ID, for example `devops-pair1`. This will ensure your branch name is compatible with the automated build pipeline. Note the branch name should not include any `_` and generally special characters should generally be avoided.
+Feature branch naming recommendations are based on your pair, for example `devops-pair1`. This will ensure your branch name is compatible with the automated build pipeline. Note the branch name should not include any `_` and generally special characters should generally be avoided.
 
 Git config:
 ```bash
@@ -98,10 +98,10 @@ View the Jenkinsfile in the editor and take note of the stages:
 Sample:
 ```
 stage('Build') {
-			container('nodegcloud') {
-				sh 'echo build'
-			}
-		}
+	container('nodegcloud') {
+		sh 'echo build'
+	}
+}
 ```
 We will be modifying the code in the stages to execute build, test and deploy.
 
@@ -113,6 +113,82 @@ http://jenkins.techagile.training:8080/
 Navigate to the `devops-react` project and open it...you should see your feature branch and the status of the build. Take a look around at the steps in the Jenkins UI pipeline, they correspond to the `stage` variable in the `Jenkinsfile`.
 
 Now, let's add some functionality to those steps.
+
+Click the **Continue** button to move to the next step.
+
+## Unit Test
+Add the unit test execution script to the `Jenkinsfile` in the Unit Test stage.
+```bash
+sh 'CI=true npm test'
+```
+
+Once complete the section should look like below:
+```
+stage('Unit Test') {
+	container('nodegcloud') {
+		sh 'echo unit test'
+	}
+}
+```
+
+Execute the git commands to push the change to the remote branch:
+```bash
+git add Jenkinsfile
+git commit -m "<message>"
+git push origin <branchname>
+```
+
+Head back over to Jenkins to see the build running...
+
+Click the **Continue** button to move to the next step.
+
+## Fix the fake test
+A failing test was put into place to ensure the build process caught it. Fix the test and push the code out again.
+
+In the `src/App.test.js` file, remove the failing test.
+```javascript
+it('fails for demo purposes', () => {
+  expect(true).toEqual(false);
+});
+```
+
+```bash
+git add `src/App.test.js1
+git commit -m "Fix failing test"
+git push origin <branchname>
+```
+
+Click the **Continue** button to move to the next step.
+
+## Build the docker image
+
+```bash
+stage('Build Docker Image') {
+	container('nodegcloud') {
+		sh 'echo building image...'
+		sh "docker build -t ${IMAGE_NAME} ."
+	}
+}
+```
+
+Click the **Continue** button to move to the next step.
+
+stage('Publish Docker Image') {
+	container('nodegcloud') {
+		sh 'echo publishing image...'
+		sh "gcloud docker -- push ${IMAGE_NAME}"
+	}
+}
+
+stage('Deploy') {
+	container('nodegcloud') {
+		sh 'echo deploying image...'
+		sh """sed 's|{{IMAGE_NAME}}|${IMAGE_NAME}|' k8s-template.yaml | \
+sed 's/{{GIT_BRANCH_NAME}}/${GIT_BRANCH_NAME}/' > deployment.yaml
+"""
+sh "kubectl apply -f deployment.yaml --validate=false"
+	}
+}
 
 Click the **Continue** button to move to the next step.
 
