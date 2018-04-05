@@ -1,0 +1,7 @@
+{
+  "timeStamp": "TIME_STAMP",
+  "imageVersion": "IMAGE_NAME",
+  "gitCommit": "GIT_COMMIT",
+  "gitBranch": "GIT_BRANCH", 
+  "buildNumber": "BUILD_NUMBER"
+}
