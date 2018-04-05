@@ -46,6 +46,7 @@ volumes: [
 		stage('Build') {
 			container('nodegcloud') {
 				sh 'echo build'
+				sh 'npm install'
 			}
 		}
 
