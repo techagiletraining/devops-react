@@ -11,7 +11,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to DevOps React</h1>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          Edit some <code>src/App.js</code> and see if it does anything.
         </p>
       </div>
     );
