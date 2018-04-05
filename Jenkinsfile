@@ -28,6 +28,17 @@ volumes: [
                 // set the kubectl context to the proper cluster
                 sh "gcloud container clusters get-credentials $CLUSTER_ID --zone=$CLUSTER_ZONE"
 				checkout scm
+
+				// TODO clean up and move to its own file
+				sh """sed 's|BUILD_NUMBER|${BUILD_NUMBER}|g' src/version-template.json > version.json
+                """
+                sh """sed -i 's|TIME_STAMP|${TIMESTAMP}|g' version.json
+                """
+                sh """sed -i 's|GIT_BRANCH|${BRANCH_NAME}|g' version.json
+                """
+                sh """sed -i 's|IMAGE_NAME|${IMAGE_NAME}|g' version.json
+                """
+
 				sh 'echo end setup'
 			}
 		}
