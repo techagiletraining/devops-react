@@ -210,6 +210,52 @@ sh "kubectl apply -f deployment.yaml --validate=false"
 }
 ```
 
+Add the Kubernetes deployment configuration file:
+`k8s-template.yaml`
+```yaml
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: devops-react-{{GIT_BRANCH_NAME}}
+  labels:
+    app: devops-react
+    branch: {{GIT_BRANCH_NAME}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devops-react
+      branch: {{GIT_BRANCH_NAME}}
+  template:
+    metadata:
+      labels:
+        app: devops-react
+        branch: {{GIT_BRANCH_NAME}}
+    spec:
+      containers:
+      - name: devops-react
+        image: {{IMAGE_NAME}}
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: devops-react-{{GIT_BRANCH_NAME}}
+  labels:
+    app: devops-react
+    branch: {{GIT_BRANCH_NAME}}
+spec:
+  selector:
+    app: devops-react
+    branch: {{GIT_BRANCH_NAME}}
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080```
+
 Push the changes to the remote branch:
 ```bash
 git add Jenkinsfile
