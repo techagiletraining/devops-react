@@ -9,14 +9,14 @@ volumes: [
 
 	node(label) {
 		stage('Setup') {
-		PROJECT_ID = 'devops-live'
+	   	PROJECT_ID = 'devops-live'
 	    APP_NAME = 'devops-react'
 	    DOCKER_REPO = 'gcr.io'
 	    CLUSTER_ID = 'devops'
 	    CLUSTER_ZONE = 'us-east1-b'
 	    GIT_BRANCH_NAME = env.BRANCH_NAME.replaceAll("[# ._]", "-").trim()
-        TIMESTAMP = System.currentTimeMillis()
-        IMAGE_NAME = "${DOCKER_REPO}/${PROJECT_ID}/${APP_NAME}/${GIT_BRANCH_NAME}:${TIMESTAMP}"
+      TIMESTAMP = System.currentTimeMillis()
+      IMAGE_NAME = "${DOCKER_REPO}/${PROJECT_ID}/${APP_NAME}/${GIT_BRANCH_NAME}:${TIMESTAMP}"
 
 		    container('nodegcloud') {
 				sh 'echo begin setup'
@@ -60,24 +60,24 @@ volumes: [
 		stage('Build Docker Image') {
 			container('nodegcloud') {
 				sh 'echo building docker image...'
-                sh 'docker -v'
+                sh 'docker build -t ${IMAGE_NAME} .'
 			}
 		}
 
 		stage('Publish Docker Image') {
 			container('nodegcloud') {
 				sh 'echo publishing image...'
-				sh 'gcloud -v'
+				sh 'gcloud docker -- push ${IMAGE_NAME} '
 			}
 		}
 
 		stage('Deploy') {
 	container('nodegcloud') {
 		sh 'echo deploying image...'
-		//sh """sed 's|{{IMAGE_NAME}}|${IMAGE_NAME}|' k8s-template.yaml | \
-            //sed 's/{{GIT_BRANCH_NAME}}/${GIT_BRANCH_NAME}/' > deployment.yaml
-            //"""
-		//sh "kubectl apply -f deployment.yaml --validate=false"
+		sh """sed 's|{{IMAGE_NAME}}|${IMAGE_NAME}|' k8s-template.yaml | \
+            sed 's/{{GIT_BRANCH_NAME}}/${GIT_BRANCH_NAME}/' > deployment.yaml
+            """
+		sh "kubectl apply -f deployment.yaml --validate=false"
 	}
 }
 	}
