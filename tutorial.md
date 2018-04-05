@@ -206,51 +206,9 @@ The `Deploy` stage has been added already due to being error prone with the mark
 
 Uncomment the `Deploy` stage in the `Jenkinsfile`.
 
-Add the Kubernetes deployment configuration file:
-`k8s-template.yaml`
-```yaml
----
-apiVersion: apps/v1beta2
-kind: Deployment
-metadata:
-  name: devops-react-{{GIT_BRANCH_NAME}}
-  labels:
-    app: devops-react
-    branch: {{GIT_BRANCH_NAME}}
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: devops-react
-      branch: {{GIT_BRANCH_NAME}}
-  template:
-    metadata:
-      labels:
-        app: devops-react
-        branch: {{GIT_BRANCH_NAME}}
-    spec:
-      containers:
-      - name: devops-react
-        image: {{IMAGE_NAME}}
-        ports:
-        - containerPort: 8080
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: devops-react-{{GIT_BRANCH_NAME}}
-  labels:
-    app: devops-react
-    branch: {{GIT_BRANCH_NAME}}
-spec:
-  selector:
-    app: devops-react
-    branch: {{GIT_BRANCH_NAME}}
-  type: LoadBalancer
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080```
+View the Kubernetes deployment configuration file:
+`k8s-template.yaml`.  The variables in the `{{}}` will be dynamically replaced during the build process.
+
 
 Push the changes to the remote branch:
 ```bash
