@@ -60,14 +60,14 @@ volumes: [
 		stage('Build Docker Image') {
 			container('nodegcloud') {
 				sh 'echo building docker image...'
-                sh 'docker build -t ${IMAGE_NAME} .'
+        sh "docker build -t ${IMAGE_NAME} ."
 			}
 		}
 
 		stage('Publish Docker Image') {
 			container('nodegcloud') {
 				sh 'echo publishing image...'
-				sh 'gcloud docker -- push ${IMAGE_NAME} '
+				sh "gcloud docker -- push ${IMAGE_NAME}"
 			}
 		}
 
