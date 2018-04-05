@@ -1,3 +1,10 @@
+stage('Build') {
+	container('nodegcloud') {
+		sh 'echo build'
+	}
+}
+
+
 stage('Unit Test') {
 	container('nodegcloud') {
 		sh 'echo unit test'
