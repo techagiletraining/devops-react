@@ -60,7 +60,8 @@ volumes: [
 		stage('Build Docker Image') {
 			container('nodegcloud') {
 				sh 'echo building docker image...'
-                sh 'docker -v'
+                sh "docker build -t ${IMAGE_NAME} ."
+
 			}
 		}
 
