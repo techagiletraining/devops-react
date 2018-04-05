@@ -118,7 +118,7 @@ Now, let's add some functionality to those steps.
 Click the **Continue** button to move to the next step.
 
 ## Unit Test
-Add the unit test execution script to the `Jenkinsfile` in the Unit Test stage.
+Open the `Jenkinsfile` and the unit test execution script in the Unit Test stage.
 ```bash
 sh 'CI=true npm test'
 ```
@@ -136,11 +136,15 @@ stage('Unit Test') {
 Execute the git commands to push the change to the remote branch:
 ```bash
 git add Jenkinsfile
-git commit -m "<message>"
+```
+```bash
+git commit -m "Add unit testing"
+```
+```
 git push origin <branchname>
 ```
 
-Head back over to Jenkins to see the build running...
+Head back over to [Jenkins](http://jenkins.techagile.training:8080/job/devops-react/) to see the build running...
 
 Click the **Continue** button to move to the next step.
 
@@ -155,8 +159,12 @@ it('fails for demo purposes', () => {
 ```
 
 ```bash
-git add src/App.test.js1
+git add src/App.test.js
+```
+```bash
 git commit -m "Fix failing test"
+```
+```bash
 git push origin <branchname>
 ```
 
@@ -164,7 +172,9 @@ Click the **Continue** button to move to the next step.
 
 ## Build the docker image
 
-```bash
+Update the `Build Docker Image` stage in the `Jenkinsfile`:
+
+```
 stage('Build Docker Image') {
 	container('nodegcloud') {
 		sh 'echo building image...'
@@ -174,6 +184,8 @@ stage('Build Docker Image') {
 ```
 
 Click the **Continue** button to move to the next step.
+
+## Publish the image and deploy
 
 Push the docker image to the Google Container Registry and then deploy it to the defined cluster.
 
@@ -201,10 +213,15 @@ sh "kubectl apply -f deployment.yaml --validate=false"
 Push the changes to the remote branch:
 ```bash
 git add Jenkinsfile
+```
+
+```bash
 git commit -m "Publish the docker image and deploy."
+```
+```bash
 git push origin <branchname>
 ```
-If the build was successful, the app will be deployed to the cluster defined in the `Jenkins` file.
+If the build was successful, the app will be deployed to the `devops` cluster defined in the `Jenkins` file.
 
 Click the **Continue** button to move to the next step.
 
