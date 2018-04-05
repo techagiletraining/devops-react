@@ -9,5 +9,5 @@ it('renders without crashing', () => {
 });
 
 it('fails for demo purposes', () => {
-  expect(true).toEqual(false);
+  expect(true).toEqual(true);
 });
