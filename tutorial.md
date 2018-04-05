@@ -202,17 +202,9 @@ stage('Publish Docker Image') {
 }
 ```
 
-```
-stage('Deploy') {
-	container('nodegcloud') {
-		sh 'echo deploying image...'
-		sh """sed 's|{{IMAGE_NAME}}|${IMAGE_NAME}|' k8s-template.yaml | \
-sed 's/{{GIT_BRANCH_NAME}}/${GIT_BRANCH_NAME}/' > deployment.yaml
-"""
-sh "kubectl apply -f deployment.yaml --validate=false"
-	}
-}
-```
+The `Deploy` stage has been added already due to being error prone with the markdown.
+
+Uncomment the `Deploy` stage in the `Jenkinsfile`.
 
 Add the Kubernetes deployment configuration file:
 `k8s-template.yaml`
