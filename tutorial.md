@@ -24,6 +24,10 @@ git config --global user.name tech-agile
 git config --global user.email techagile.github@gmail.com
 ```
 
+```bash
+git config --global url.https://.insteadOf git://
+```
+
 The password for the common user account will be provided in class.
 
 Create a feature branch:
