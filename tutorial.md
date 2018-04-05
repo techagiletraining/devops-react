@@ -204,7 +204,7 @@ stage('Publish Docker Image') {
 
 The `Deploy` stage has been added already due to being error prone with the markdown.
 
-Uncomment the `Deploy` stage in the `Jenkinsfile`.
+Uncomment the `Deploy` stage in the `Jenkinsfile` by removing the ``//`` from the `sed` command.
 
 View the Kubernetes deployment configuration file:
 `k8s-template.yaml`.  The variables in the `{{}}` will be dynamically replaced during the build process.
