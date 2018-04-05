@@ -58,7 +58,7 @@ Build the Docker image:
 docker build -t devops-react:latest .
 ```
 
-View the image and note the image ID:
+View the image and copy the image ID(devops-react is the name):
 ```bash
 docker images
 ```
@@ -68,7 +68,7 @@ Run the image:
 docker run -d IMAGEID
 ```
 
-Confirm the container is running and note the container ID:
+Confirm the container is running and copy the container ID:
 ```bash
 docker ps
 ```
@@ -79,7 +79,7 @@ docker rm CONTAINERID -f
 ```
 
 **Optional**
-Open the `docker-compose.yml` file in the editor. [Docker compose](https://docs.docker.com/compose/) can be used to build and run the container and is useful for building and running multiple applications in a single container.
+Open the `docker-compose.yml` file in the editor. [Docker compose](https://docs.docker.com/compose/) can be used to build and run the container. Compose is also useful for building and running multiple applications in a single container.
 
 ```bash
 docker-compose up
@@ -92,7 +92,7 @@ To stop the container execute `ctrl + c` in the terminal.
 Click the **Continue** button to move to the next step.
 
 ## Jenkins pipeline
-For creating the pipeline you will build out a `Jenkins` file (template provided).  A [Jenkins](https://jenkins.io/) instance that is already running will execute the steps you define in the pipeline and newly pushed commits/branches will be detected automatically by branch name.
+For creating the pipeline you will build out a `Jenkins` file (template provided).  A [Jenkins](https://jenkins.io/) instance that is already running will execute the steps you define in the pipeline. Newly pushed commits/branches will be detected automatically by branch name.
 
 View the Jenkinsfile in the editor and take note of the stages:
 
@@ -111,14 +111,14 @@ Access Jenkins (credentials provided in class):
 http://jenkins.techagile.training:8080/
 ```
 
-Navigate to the `devops-react` project and open it...you should see your feature branch and the status of the build. Take a look around at the steps in the Jenkins UI pipeline, they correspond to the `stage` variable in the `Jenkinsfile`.
+Navigate to the `devops-react` project and open it...you should see your feature branch and the status of the build (remember, we executed a git push at the begining of the walkthrough). Take a look around at the steps in the Jenkins UI pipeline, they correspond to the `stage` variable in the `Jenkinsfile`.
 
 Now, let's add some functionality to those steps.
 
 Click the **Continue** button to move to the next step.
 
 ## Unit Test
-Add the unit test execution script to the `Jenkinsfile` in the Unit Test stage.
+Open the `Jenkinsfile` and the unit test execution script in the Unit Test stage.
 ```bash
 sh 'CI=true npm test'
 ```
@@ -136,11 +136,15 @@ stage('Unit Test') {
 Execute the git commands to push the change to the remote branch:
 ```bash
 git add Jenkinsfile
-git commit -m "<message>"
+```
+```bash
+git commit -m "Add unit testing"
+```
+```
 git push origin <branchname>
 ```
 
-Head back over to Jenkins to see the build running...
+Head back over to [Jenkins](http://jenkins.techagile.training:8080/job/devops-react/) to see the build running...
 
 Click the **Continue** button to move to the next step.
 
@@ -155,8 +159,12 @@ it('fails for demo purposes', () => {
 ```
 
 ```bash
-git add src/App.test.js1
+git add src/App.test.js
+```
+```bash
 git commit -m "Fix failing test"
+```
+```bash
 git push origin <branchname>
 ```
 
@@ -164,7 +172,9 @@ Click the **Continue** button to move to the next step.
 
 ## Build the docker image
 
-```bash
+Update the `Build Docker Image` stage in the `Jenkinsfile`:
+
+```
 stage('Build Docker Image') {
 	container('nodegcloud') {
 		sh 'echo building image...'
@@ -174,6 +184,8 @@ stage('Build Docker Image') {
 ```
 
 Click the **Continue** button to move to the next step.
+
+## Publish the image and deploy
 
 Push the docker image to the Google Container Registry and then deploy it to the defined cluster.
 
@@ -201,10 +213,15 @@ sh "kubectl apply -f deployment.yaml --validate=false"
 Push the changes to the remote branch:
 ```bash
 git add Jenkinsfile
+```
+
+```bash
 git commit -m "Publish the docker image and deploy."
+```
+```bash
 git push origin <branchname>
 ```
-If the build was successful, the app will be deployed to the cluster defined in the `Jenkins` file.
+If the build was successful, the app will be deployed to the `devops` cluster defined in the `Jenkins` file.
 
 Click the **Continue** button to move to the next step.
 
