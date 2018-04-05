@@ -61,24 +61,23 @@ volumes: [
 			container('nodegcloud') {
 				sh 'echo building docker image...'
                 sh "docker build -t ${IMAGE_NAME} ."
-
 			}
 		}
 
 		stage('Publish Docker Image') {
 			container('nodegcloud') {
 				sh 'echo publishing image...'
-				sh 'gcloud -v'
+                sh "gcloud docker -- push ${IMAGE_NAME}"
 			}
 		}
 
 		stage('Deploy') {
 	container('nodegcloud') {
 		sh 'echo deploying image...'
-		//sh """sed 's|{{IMAGE_NAME}}|${IMAGE_NAME}|' k8s-template.yaml | \
-            //sed 's/{{GIT_BRANCH_NAME}}/${GIT_BRANCH_NAME}/' > deployment.yaml
-            //"""
-		//sh "kubectl apply -f deployment.yaml --validate=false"
+		sh """sed 's|{{IMAGE_NAME}}|${IMAGE_NAME}|' k8s-template.yaml | \
+            sed 's/{{GIT_BRANCH_NAME}}/${GIT_BRANCH_NAME}/' > deployment.yaml
+            """
+		sh "kubectl apply -f deployment.yaml --validate=false"
 	}
 }
 	}
